@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "249613703605",
+    "project_id": "task-manager-5df79",
+    "storage_bucket": "task-manager-5df79.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249613703605:android:166ee3a2a3c8cb056161fc",
+        "android_client_info": {
+          "package_name": "com.example.djamo_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKQojUxIyKuYsJJ_PU_iQPdzqqLdi1Goo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
