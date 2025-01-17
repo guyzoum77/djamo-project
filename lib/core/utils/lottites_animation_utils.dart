@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class LottieWidget extends StatefulWidget {
+class LottieWidgetUtils extends StatefulWidget {
   final double widthLottie;
   final String lottieAsset;
   final String textContent;
@@ -13,7 +13,7 @@ class LottieWidget extends StatefulWidget {
   final double? containerHeight;
   final EdgeInsetsGeometry? margin;
 
-  const LottieWidget({
+  const LottieWidgetUtils({
     Key? key,
     required this.widthLottie,
     required this.lottieAsset,
@@ -28,10 +28,10 @@ class LottieWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<LottieWidget> createState() => _LottieWidgetState();
+  State<LottieWidgetUtils> createState() => _LottieWidgetUtilsState();
 }
 
-class _LottieWidgetState extends State<LottieWidget> with TickerProviderStateMixin {
+class _LottieWidgetUtilsState extends State<LottieWidgetUtils> with TickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
@@ -94,14 +94,14 @@ class _LottieWidgetState extends State<LottieWidget> with TickerProviderStateMix
   }
 }
 
-class LottieDataWidget extends StatefulWidget {
+class LottieDataWidgetUtils extends StatefulWidget {
   final double widthLottie;
   final String lottieAsset;
   final double? containerWidth;
   final double? containerHeight;
   final EdgeInsetsGeometry? margin;
 
-  const LottieDataWidget({
+  const LottieDataWidgetUtils({
     Key? key,
     required this.widthLottie,
     required this.lottieAsset,
@@ -111,23 +111,29 @@ class LottieDataWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<LottieDataWidget> createState() => _LottieDataWidgetState();
+  State<LottieDataWidgetUtils> createState() => _LottieDataWidgetUtilsState();
 }
 
-class _LottieDataWidgetState extends State<LottieDataWidget> {
+class _LottieDataWidgetUtilsState extends State<LottieDataWidgetUtils> {
 
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      width: widget.containerWidth,
-      height: widget.containerHeight,
-      margin: widget.margin,
-      child: Lottie.asset(
-        widget.lottieAsset,
-        fit: BoxFit.cover,
-        width: widget.widthLottie,
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: widget.containerWidth,
+          height: widget.containerHeight,
+          margin: widget.margin,
+          child: Lottie.asset(
+            widget.lottieAsset,
+            fit: BoxFit.cover,
+            width: widget.widthLottie,
+          ),
+        )
+      ],
     );
   }
 }
