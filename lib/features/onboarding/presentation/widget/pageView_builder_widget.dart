@@ -16,12 +16,16 @@ class PageViewBuilderWidget {
         controller: pageController,
         itemCount: itemCountLength,
         onPageChanged: (int idx) {
+          print("currentPage on onPageChanged is $currentPage");
           setState(() {
             currentPage = idx;
           });
         },
         itemBuilder: (BuildContext context, int idx) {
           final item = pages[idx];
+          print("currentPage is ${currentPage}");
+          print("pages.length is ${pages.length}");
+
           return Column(
             children: [
               SizedBox(height: MediaQuery.of(context).size.height / 75),

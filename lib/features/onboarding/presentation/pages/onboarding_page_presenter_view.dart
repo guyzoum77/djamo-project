@@ -1,3 +1,4 @@
+import 'package:djamo_test/core/utils/app_colors_utils.dart';
 import 'package:djamo_test/features/onboarding/data/models/onboarding_model.dart';
 import 'package:djamo_test/features/onboarding/presentation/widget/animated_container_widget.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _OnBoardingPagePresenterViewState extends State<OnBoardingPagePresenterVie
 
 
     return Scaffold(
+      backgroundColor: AppColorsUtils.kSecondarySoftLightColor,
       body: AnimatedContainerWidget.content(
         context, widget.pages[currentPage].bgColor, pageController, widget.pages.length, currentPage, setState, widget.pages, widget.onFinish
       )

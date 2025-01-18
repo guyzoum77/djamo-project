@@ -3,6 +3,8 @@ import 'package:djamo_test/features/task/presentation/bloc/task_bloc.dart';
 import 'package:djamo_test/features/task/presentation/pages/task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/task/presentation/pages/loaded/loaded_task_view.dart';
+import 'features/task/presentation/pages/task_view.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 
@@ -17,7 +19,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(home: OnBoardingPage());
+    //return  MaterialApp(home: OnBoardingPage());
+    //return  MaterialApp(home: TaskView());
+    return  MaterialApp(home: LoadedTaskView());
   }
 }
 

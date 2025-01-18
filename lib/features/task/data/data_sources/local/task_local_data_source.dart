@@ -16,7 +16,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   TaskLocalDataSourceImpl({required this.sharedPreference});
 
   @override
-  Future<List<TaskModel>> fetch() async {
+  Future<List<TaskModel>>fetch() async {
     try {
       final String? value = await sharedPreference.getString(CACHED_TASK);
       if (value == null ) {

@@ -22,4 +22,22 @@ class FetchAllTaskRepositoryImpl implements TaskRepository {
       return Left(CacheFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> delete(String id) {
+    // TODO: implement delete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, void>> save({required String id, required String title, required String description, required bool status, required DateTime createdAt}) {
+    // TODO: implement save
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<TaskEntity>>> update({required String id, required String title, required String description, required bool status, required DateTime createdAt, required DateTime updatedAt}) {
+    // TODO: implement update
+    throw UnimplementedError();
+  }
 }
