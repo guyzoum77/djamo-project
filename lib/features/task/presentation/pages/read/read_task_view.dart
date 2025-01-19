@@ -1,4 +1,5 @@
 import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
+import 'package:djamo_test/core/utils/alert_message.dart';
 import 'package:djamo_test/features/task/domain/entities/task_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -86,8 +87,12 @@ class _ReadTaskViewState extends State<ReadTaskView> {
                                         enabled: enableTextField,
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return 'Description of date is required';
+                                            return "Le titre de la tâche est requise";
                                           }
+                                          if (!RegExp(r'\S').hasMatch(value)) {
+                                            return "Aucun espace n'est permis";
+                                          }
+
                                           return null;
                                         },
                                         controller: _titleCtrl,
@@ -124,8 +129,12 @@ class _ReadTaskViewState extends State<ReadTaskView> {
                                         enabled: enableTextField,
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
-                                            return 'La description de la tâche est requise';
+                                            return "La description de la tâche est requise";
                                           }
+                                          if (!RegExp(r'\S').hasMatch(value)) {
+                                            return "Aucun espace n'est permis";
+                                          }
+
                                           return null;
                                         },
                                         controller: _descriptionCtrl,
@@ -138,16 +147,16 @@ class _ReadTaskViewState extends State<ReadTaskView> {
                                       children: [
                                         Container(
                                           margin: const EdgeInsets.only(left: 10),
-                                          child: Row(
-                                            children: const[
+                                          child: const Row(
+                                            children: [
                                               Icon(Icons.info, color: AppColorsUtils.kMediumGreyColor, size: 15),
                                               SizedBox(width: 3),
                                               Text("Entrer la description de la tâche",
                                                 style: TextStyle(
-                                                    fontFamily: 'Nunito',
-                                                    fontWeight: FontWeight.bold,
-                                                    color: AppColorsUtils.kMediumGreyColor,
-                                                    fontSize: 13
+                                                  fontFamily: 'Nunito',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AppColorsUtils.kMediumGreyColor,
+                                                  fontSize: 13
                                                 ),
                                               ),
                                             ],
@@ -181,9 +190,27 @@ class _ReadTaskViewState extends State<ReadTaskView> {
               child: CustomOutlineButton(
                 name: "Enregistrer",
                 onPressed: () {
-                  widget.taskProvider.update(widget.taskEntity.id, _titleCtrl.text, _descriptionCtrl.text);
-                  widget.taskBloc.add(SaveTaskEvent(tasks: widget.taskProvider.taskEntities));
-                  Navigator.pop(context);
+                  if (_formKeyAddNewTask.currentState!.validate()) {
+                    setState(() {
+                      isLoading = !isLoading;
+                    });
+
+                    widget.taskProvider.update(widget.taskEntity.id, _titleCtrl.text, _descriptionCtrl.text);
+                    widget.taskBloc.add(SaveTaskEvent(tasks: widget.taskProvider.taskEntities));
+
+                    Future.delayed(const Duration(milliseconds: 100), () async {
+                      context.showAlertMessageSnackbar(
+                        Icons.check_circle,
+                        AppColorsUtils.kWhiteColor,
+                        "Tâche modifiée avec succès",
+                        AlertType.success,
+                        AppColorsUtils.kSuccessColor,
+                        const Duration(milliseconds: 1000)
+                      );
+                    });
+
+                    Navigator.pop(context);
+                  }
                 },
                 minimumSize: 41,
                 borderRadius: 6,

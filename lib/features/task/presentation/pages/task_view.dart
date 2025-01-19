@@ -1,3 +1,4 @@
+import 'package:djamo_test/core/utils/alert_message.dart';
 import 'package:djamo_test/core/utils/lottites_animation_utils.dart';
 import 'package:djamo_test/features/task/presentation/bloc/task_bloc.dart';
 import 'package:djamo_test/features/task/presentation/pages/read/read_task_view.dart';
@@ -54,55 +55,6 @@ class _TaskViewState extends State<TaskView> {
             appBar: AppBar(
               backgroundColor: AppColorsUtils.kSecondarySoftLightColor,
               toolbarHeight: size.height / 13,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Container(
-                  //   width: size.width / 3,
-                  //   height: size.height / 17,
-                  //   margin: EdgeInsets.only(left: size.width / 50),
-                  //   decoration: BoxDecoration(
-                  //     color: AppColorsUtils.kPrimaryColor,
-                  //     borderRadius: BorderRadius.circular(50)
-                  //   ),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       Container(
-                  //         width: size.height / 21,
-                  //         height: size.height / 21,
-                  //         margin: const EdgeInsets.all(5),
-                  //         decoration: BoxDecoration(
-                  //           color: AppColorsUtils.kWhiteColor,
-                  //           borderRadius: BorderRadius.circular(100)
-                  //         ),
-                  //         child: const LottieDataWidgetUtils(
-                  //           widthLottie: 30,
-                  //           lottieAsset: "images/lotties/home_clock.json"
-                  //         )
-                  //       ),
-                  //       Container(
-                  //         margin: EdgeInsets.only(right: size.width / 20),
-                  //         child: StreamBuilder(
-                  //           stream: taskProvider.dateStream,
-                  //           builder: (BuildContext context, AsyncSnapshot<DateTime> snapshot) {
-                  //             var dateFormated = _formatDateTime(snapshot.data!);
-                  //
-                  //             return Text(
-                  //               dateFormated,
-                  //               style: const TextStyle(
-                  //                 fontSize: 17,
-                  //                 color: AppColorsUtils.kWhiteColor,
-                  //               ),
-                  //             );
-                  //           },
-                  //         ),
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
-                ],
-              ),
             ),
             backgroundColor: AppColorsUtils.kSecondarySoftLightColor,
             body: SafeArea(
@@ -113,9 +65,9 @@ class _TaskViewState extends State<TaskView> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(left: size.width / 30, top: size.height / 20),
+                        margin: EdgeInsets.only(left: size.width / 30, top: size.height / 40),
                         child: RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                               text: "Bonjour,",
                               style: TextStyle(color: Colors.black, fontSize: 18),
                               children: [
@@ -237,7 +189,7 @@ class _TaskViewState extends State<TaskView> {
                           return InkWell(
                             child: TaskCardWidget(
                               containerWidth: size.width / 1.08,
-                              containerHeight: size.height / 13.5,
+                              containerHeight: size.height / 13.3,
                               marginLeft: size.width / 30,
                               marginRight: size.width / 30,
                               marginTop: 0,
@@ -278,11 +230,16 @@ class _TaskViewState extends State<TaskView> {
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                SizedBox(child: Text(
-                                                  taskProvider.taskEntities[index].title,
-                                                  overflow: TextOverflow.fade,
-                                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                                                ),),
+                                                Container(
+                                                  margin: const EdgeInsets.only(bottom: 2),
+                                                  width: size.width / 1.5,
+                                                  child: Text(
+                                                    taskProvider.taskEntities[index].title,
+                                                    overflow: TextOverflow.fade,
+                                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                                                    maxLines: 1,
+                                                  ),
+                                                ),
                                                 Row(
                                                   children: [
                                                     Container(
@@ -328,11 +285,19 @@ class _TaskViewState extends State<TaskView> {
               backgroundColor: taskProvider.taskSelected.isEmpty ? AppColorsUtils.kPrimaryColor:AppColorsUtils.kDangerColor,
               tooltip: "Ajouter une nouvelle tâche",
               onPressed: taskProvider.taskSelected.isEmpty
-                  ? () => Navigator.push(context, SlideRightRoute(page: AddTaskView(taskBloc: taskBloc, taskProvider: taskProvider,)))
-                  : (){
-                    taskProvider.deletedTask();
-                    taskBloc.add(SaveTaskEvent(tasks: taskProvider.taskEntities));
-                  },
+                ? () => Navigator.push(context, SlideRightRoute(page: AddTaskView(taskBloc: taskBloc, taskProvider: taskProvider,)))
+                : (){
+                  taskProvider.deletedTask();
+                  taskBloc.add(SaveTaskEvent(tasks: taskProvider.taskEntities));
+                  context.showAlertMessageSnackbar(
+                    Icons.check_circle,
+                    AppColorsUtils.kWhiteColor,
+                    "Tâche supprimée",
+                    AlertType.success,
+                    AppColorsUtils.kSuccessColor,
+                    const Duration(milliseconds: 1000)
+                  );
+                },
               child: Icon(taskProvider.taskSelected.isEmpty ? Icons.add : Icons.delete_forever, size: 28, color:taskProvider.taskSelected.isEmpty ? AppColorsUtils.kWhiteColor: AppColorsUtils.kWhiteColor),
             ),
             extendBody: true,

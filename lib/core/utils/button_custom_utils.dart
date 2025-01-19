@@ -65,7 +65,7 @@ class CustomOutlineButton extends StatelessWidget {
   final double minimumSize;
   final double elevation;
   final double fontSize;
-  final VoidCallback onPressed;
+  final void Function()? onPressed;
 
   @override
   Widget build (BuildContext context) {

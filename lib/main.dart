@@ -19,9 +19,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return  MaterialApp(home: OnBoardingPage());
-    //return  MaterialApp(home: TaskView());
-    return  MaterialApp(home: TaskPage());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: TaskPage()
+    );
   }
 }
 
@@ -42,10 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Text("data")
-      ),
-      
     );
   }
 }

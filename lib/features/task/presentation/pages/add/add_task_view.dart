@@ -1,4 +1,5 @@
 import 'package:blurry_modal_progress_hud/blurry_modal_progress_hud.dart';
+import 'package:djamo_test/core/utils/alert_message.dart';
 import 'package:djamo_test/core/utils/button_custom_utils.dart';
 import 'package:djamo_test/core/utils/lottites_animation_utils.dart';
 import 'package:flutter/material.dart';
@@ -85,8 +86,12 @@ class _AddTaskViewState extends State<AddTaskView> {
                                     hintText: 'Titre',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Description of date is required';
+                                        return "Le titre de la tâche est requis";
                                       }
+                                      if (!RegExp(r'\S').hasMatch(value)) {
+                                        return "Aucun espace n'est permis";
+                                      }
+
                                       return null;
                                     },
                                     controller: _titleCtrl,
@@ -127,8 +132,12 @@ class _AddTaskViewState extends State<AddTaskView> {
                                     hintText: 'Description',
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'La description de la tâche est requise';
+                                        return "La description de la tâche est requise";
                                       }
+                                      if (!RegExp(r'\S').hasMatch(value)) {
+                                        return "Aucun espace n'est permis";
+                                      }
+
                                       return null;
                                     },
                                     controller: _descriptionCtrl,
@@ -174,10 +183,28 @@ class _AddTaskViewState extends State<AddTaskView> {
               padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: MediaQuery.of(context).viewInsets.bottom),
               child: CustomOutlineButton(
                 name: "Enregistrer",
-                onPressed: () {
-                  widget.taskProvider.add(_titleCtrl.text, _descriptionCtrl.text);
-                  widget.taskBloc.add(SaveTaskEvent(tasks: widget.taskProvider.taskEntities));
-                  Navigator.pop(context);
+                onPressed: isLoading ? null : () {
+                  if (_formKeyAddNewTask.currentState!.validate()) {
+                    setState(() {
+                      isLoading = !isLoading;
+                    });
+
+                    widget.taskProvider.add(_titleCtrl.text, _descriptionCtrl.text);
+                    widget.taskBloc.add(SaveTaskEvent(tasks: widget.taskProvider.taskEntities));
+
+                    Future.delayed(const Duration(microseconds: 100), () async {
+                      context.showAlertMessageSnackbar(
+                        Icons.check_circle,
+                        AppColorsUtils.kWhiteColor,
+                        "Tâche ajoutée avec succès",
+                        AlertType.success,
+                        AppColorsUtils.kSuccessColor,
+                        const Duration(milliseconds: 1000)
+                      );
+
+                      Navigator.pop(context);
+                    });
+                  }
                 },
                 minimumSize: 41,
                 borderRadius: 6,
