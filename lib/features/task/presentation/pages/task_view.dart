@@ -22,14 +22,8 @@ class TaskView extends StatefulWidget {
 
 class _TaskViewState extends State<TaskView> {
 
-  String _timeString = "";
   bool? value = false;
 
-  @override
-  void initState() {
-    _timeString = _formatDateTime(DateTime.now());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +40,11 @@ class _TaskViewState extends State<TaskView> {
       },
       builder: (context, state) {
         if(state is GetTaskLoading) {
-        return const  Scaffold(
-        body: Center(
-        child: CircularProgressIndicator(),
-        ),
-        );
+          return const  Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         } else if (state is GetTaskError){
          return Scaffold(body: Center(child: Text("ERROR"),),);
         }
@@ -63,57 +57,50 @@ class _TaskViewState extends State<TaskView> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: size.width / 3.5,
-                    height: size.height / 17,
-                    margin: EdgeInsets.only(left: size.width / 50),
-                    decoration: BoxDecoration(
-                        color: AppColorsUtils.kPrimaryColor,
-                        borderRadius: BorderRadius.circular(50)
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            width: size.height / 21,
-                            height: size.height / 21,
-                            margin: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                color: AppColorsUtils.kWhiteColor,
-                                borderRadius: BorderRadius.circular(100)
-                            ),
-                            child: LottieDataWidgetUtils(
-                                widthLottie: 30,
-                                lottieAsset: "images/lotties/home_clock.json"
-                            )
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: size.width / 20),
-                          child: Text(
-                            _timeString,
-                            style: const TextStyle(
-                              fontSize: 17,
-                              color: AppColorsUtils.kWhiteColor,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: size.width / 9.5,
-                    height: size.height / 20,
-                    margin: EdgeInsets.only(right: size.width / 20),
-                    decoration: BoxDecoration(
-                      color: AppColorsUtils.kSoftGreyColor.withOpacity(.3),
-                      border: Border.all(color: AppColorsUtils.kMediumGreyColor, ),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Icon(Icons.notifications),
-                    ),
-                  )
+                  // Container(
+                  //   width: size.width / 3,
+                  //   height: size.height / 17,
+                  //   margin: EdgeInsets.only(left: size.width / 50),
+                  //   decoration: BoxDecoration(
+                  //     color: AppColorsUtils.kPrimaryColor,
+                  //     borderRadius: BorderRadius.circular(50)
+                  //   ),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Container(
+                  //         width: size.height / 21,
+                  //         height: size.height / 21,
+                  //         margin: const EdgeInsets.all(5),
+                  //         decoration: BoxDecoration(
+                  //           color: AppColorsUtils.kWhiteColor,
+                  //           borderRadius: BorderRadius.circular(100)
+                  //         ),
+                  //         child: const LottieDataWidgetUtils(
+                  //           widthLottie: 30,
+                  //           lottieAsset: "images/lotties/home_clock.json"
+                  //         )
+                  //       ),
+                  //       Container(
+                  //         margin: EdgeInsets.only(right: size.width / 20),
+                  //         child: StreamBuilder(
+                  //           stream: taskProvider.dateStream,
+                  //           builder: (BuildContext context, AsyncSnapshot<DateTime> snapshot) {
+                  //             var dateFormated = _formatDateTime(snapshot.data!);
+                  //
+                  //             return Text(
+                  //               dateFormated,
+                  //               style: const TextStyle(
+                  //                 fontSize: 17,
+                  //                 color: AppColorsUtils.kWhiteColor,
+                  //               ),
+                  //             );
+                  //           },
+                  //         ),
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -248,9 +235,6 @@ class _TaskViewState extends State<TaskView> {
                         scrollDirection: Axis.vertical,
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            onTap: () {
-
-                            },
                             child: TaskCardWidget(
                               containerWidth: size.width / 1.08,
                               containerHeight: size.height / 13.5,
@@ -280,7 +264,7 @@ class _TaskViewState extends State<TaskView> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Navigator.push(context, SlideRightRoute(page: ReadTaskView(taskBloc: taskBloc, taskProvider: taskProvider,)));
+                                      Navigator.push(context, SlideRightRoute(page: ReadTaskView(taskBloc: taskBloc, taskProvider: taskProvider, taskEntity: taskProvider.taskEntities[index])));
                                     },
                                     onDoubleTap:(){
                                       taskProvider.makeDoneTask(taskProvider.taskEntities[index].id);
@@ -317,12 +301,10 @@ class _TaskViewState extends State<TaskView> {
                                           child:Checkbox(
                                             value: taskProvider.taskSelected.contains(taskProvider.taskEntities[index]),
                                             onChanged: (bool? newValue) {
-                                              print(newValue);
-                                              if(taskProvider.taskSelected.contains(taskProvider.taskEntities[index])){
+                                              if (taskProvider.taskSelected.contains(taskProvider.taskEntities[index])){
                                                 taskProvider.removeSelected(taskProvider.taskEntities[index].id);
-                                              }else{
+                                              } else {
                                                 taskProvider.addSelected(taskProvider.taskEntities[index].id);
-
                                               }
                                             },
                                           ),
@@ -337,7 +319,7 @@ class _TaskViewState extends State<TaskView> {
                         },
                       )
                   )
-                  : const  Text("VIDE")
+                  : LottieDataWidgetUtils(widthLottie: 320, lottieAsset: "images/lotties/add_new_task.json")
                 ],
               ),
             ),

@@ -17,6 +17,8 @@ class TaskProvider extends ChangeNotifier{
   int get taskDone => _taskDone;
   int get taskRemaining => _taskRemaining;
 
+  Stream<DateTime> dateStream = Stream.periodic(Duration(seconds: 1), (_) => DateTime.now());
+
   updateTasks(List<TaskEntity> taskEntity) {
     _taskEntities = taskEntity;
     filter();
@@ -29,9 +31,7 @@ class TaskProvider extends ChangeNotifier{
   }
 
   deletedTask() {
-    _taskEntities.removeWhere((taskEntity) =>
-        _taskSelected.any((selectedTask) => selectedTask.id == taskEntity.id)
-    );
+    _taskEntities.removeWhere((taskEntity) => _taskSelected.any((selectedTask) => selectedTask.id == taskEntity.id));
     _taskSelected.clear();
 
     filter();
@@ -65,6 +65,17 @@ class TaskProvider extends ChangeNotifier{
     );
 
     _taskEntities.add(task);
+    filter();
+  }
+
+  update(String id, String title, String description) {
+    for (var task in taskEntities) {
+      if (task.id == id) {
+        task.title = title;
+        task.description = description;
+        task.updatedAt = DateTime.now();
+      }
+    }
     filter();
   }
 }

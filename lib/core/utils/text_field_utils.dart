@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'app_colors_utils.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({
+  CustomTextField({
     Key? key,
     this.hintText,
     this.initialValue,
@@ -13,22 +13,25 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.keyboardType,
     this.onChanged,
+    this.enabled = true,
   }) : super(key: key);
 
   final String? hintText;
-  final String? initialValue;
+  String? initialValue;
   final FormFieldSetter<String>? onSaved;
   final ValueChanged<String>? onFieldSubmitted;
   final FormFieldValidator<String>? validator;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final ValueChanged<String>? onChanged;
+  bool enabled;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 1, right: 1, bottom: 5),
       child: TextFormField(
+        enabled: enabled,
         keyboardType: keyboardType,
         decoration: InputDecoration(
           focusedBorder: OutlineInputBorder(
