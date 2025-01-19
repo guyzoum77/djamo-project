@@ -1,5 +1,6 @@
 import 'package:djamo_test/core/utils/lottites_animation_utils.dart';
 import 'package:djamo_test/features/task/presentation/bloc/task_bloc.dart';
+import 'package:djamo_test/features/task/presentation/pages/read/read_task_view.dart';
 import 'package:djamo_test/features/task/presentation/provider/task_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -237,9 +238,8 @@ class _TaskViewState extends State<TaskView> {
                     ],
                   ),
                   //list task
-                  taskProvider.taskEntities.isNotEmpty ?
-                  Expanded(
-                    // height: size.height,
+                  taskProvider.taskEntities.isNotEmpty
+                  ? Expanded(
                       child: ListView.builder(
                         shrinkWrap: true,
                         padding: const EdgeInsets.only(bottom: 70),
@@ -248,7 +248,9 @@ class _TaskViewState extends State<TaskView> {
                         scrollDirection: Axis.vertical,
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            // onTap:(){},
+                            onTap: () {
+
+                            },
                             child: TaskCardWidget(
                               containerWidth: size.width / 1.08,
                               containerHeight: size.height / 13.5,
@@ -257,13 +259,14 @@ class _TaskViewState extends State<TaskView> {
                               marginTop: 0,
                               marginBottom: size.height / 80,
                               radius: 10,
-                              border: taskProvider.taskEntities[index].status! ?  Border(
+                              border: taskProvider.taskEntities[index].status!
+                              ? const Border(
                                 left: BorderSide(color:   AppColorsUtils.kSuccessColor, width: 5),
                                 right: BorderSide(color: AppColorsUtils.kSuccessColor, width: .1),
                                 top: BorderSide(color: AppColorsUtils.kSuccessColor, width: .1),
                                 bottom: BorderSide(color: AppColorsUtils.kSuccessColor, width: .1),
                               )
-                              : Border(
+                              : const Border(
                                 left: BorderSide(color:   AppColorsUtils.kPrimaryColor, width: 5),
                                 right: BorderSide(color: AppColorsUtils.kPrimaryColor, width: .1),
                                 top: BorderSide(color: AppColorsUtils.kPrimaryColor, width: .1),
@@ -276,6 +279,9 @@ class _TaskViewState extends State<TaskView> {
                               child: Column(
                                 children: [
                                   InkWell(
+                                    onTap: () {
+                                      Navigator.push(context, SlideRightRoute(page: ReadTaskView(taskBloc: taskBloc, taskProvider: taskProvider,)));
+                                    },
                                     onDoubleTap:(){
                                       taskProvider.makeDoneTask(taskProvider.taskEntities[index].id);
                                       taskBloc.add(SaveTaskEvent(tasks: taskProvider.taskEntities));
@@ -330,8 +336,8 @@ class _TaskViewState extends State<TaskView> {
                           );
                         },
                       )
-                  ) :
-                const  Text("VIDE")
+                  )
+                  : const  Text("VIDE")
                 ],
               ),
             ),
@@ -339,19 +345,17 @@ class _TaskViewState extends State<TaskView> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
               backgroundColor: taskProvider.taskSelected.isEmpty ? AppColorsUtils.kPrimaryColor:AppColorsUtils.kDangerColor,
               tooltip: "Ajouter une nouvelle tâche",
-              onPressed: taskProvider.taskSelected.isEmpty ? () => Navigator.push(context, SlideRightRoute(page: AddTaskView(taskBloc: taskBloc, taskProvider: taskProvider,))):
-                  (){
+              onPressed: taskProvider.taskSelected.isEmpty
+                  ? () => Navigator.push(context, SlideRightRoute(page: AddTaskView(taskBloc: taskBloc, taskProvider: taskProvider,)))
+                  : (){
                     taskProvider.deletedTask();
                     taskBloc.add(SaveTaskEvent(tasks: taskProvider.taskEntities));
                   },
-              child:  Icon(taskProvider.taskSelected.isEmpty ? Icons.add : Icons.delete_forever, size: 28, color:taskProvider.taskSelected.isEmpty ? AppColorsUtils.kWhiteColor: AppColorsUtils.kWhiteColor),
+              child: Icon(taskProvider.taskSelected.isEmpty ? Icons.add : Icons.delete_forever, size: 28, color:taskProvider.taskSelected.isEmpty ? AppColorsUtils.kWhiteColor: AppColorsUtils.kWhiteColor),
             ),
             extendBody: true,
           );
         }
-
-
-
       },
     );
   }
