@@ -5,23 +5,31 @@ import 'package:djamo_test/core/error/failures.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../domain/entities/task_entity.dart';
-import '../../domain/usecases/fecth_all_tasks_use_case.dart';
+import '../../domain/usecases/get_task_use_case.dart';
+import '../../domain/usecases/save_task_use_case.dart';
 
 part 'task_event.dart';
 part 'task_state.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
-  final FetchAllTaskUseCase fetchAllTaskUseCase;
+  final GetTaskUseCase getTaskUseCase;
+  final SaveTaskUseCase saveTaskUseCase;
 
-  TaskBloc({required this.fetchAllTaskUseCase}) : super(TaskInitial()) {
+  TaskBloc({required this.getTaskUseCase, required this.saveTaskUseCase}) : super(TaskInitial()) {
     on<TaskEvent>((event, emit) async{
-      if (event is FetchAllTaskEvent) {
-        emit(FetchAllTaskLoading());
-        final Either<Failure, List<TaskEntity>> failureOrSuccess = await fetchAllTaskUseCase(NoParams());
+      if (event is GetTaskEvent) {
+        emit(GetTaskLoading());
+        final Either<Failure, List<TaskEntity>> failureOrSuccess = await getTaskUseCase(NoParams());
         emit(failureOrSuccess.fold(
-          (l) => const FetchAllTaskError(message: 'Cache failure'),
-          (r) => FetchAllTaskLoaded(taskEntity: r))
+          (l) => const GetTaskError(message: 'Cache failure'),
+          (r) => GetTaskLoaded(taskEntity: r))
         );
+      } else if (event is SaveTaskEvent){
+        emit(SaveTaskLoading());
+        final Either<Failure, void> failureOrSuccess = await saveTaskUseCase(event.tasks);
+        emit(failureOrSuccess.fold(
+                (l) => const SaveTaskError(message: 'Cache failure'),
+                (r) => SaveTaskLoaded()));
       }
     });
   }

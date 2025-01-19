@@ -2,35 +2,50 @@ import 'dart:convert';
 
 import 'package:djamo_test/core/error/failures.dart';
 import 'package:djamo_test/features/task/data/models/task_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class TaskLocalDataSource {
-  Future<List<TaskModel>> fetch();
+  Future<List<TaskModel>> get();
+
+  Future<void> save(List<TaskModel> tasks);
 }
+
 
 class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   static const CACHED_TASK = "CACHED_TASK";
-  final SharedPreferences sharedPreference;
+  final FlutterSecureStorage storage;
 
 
-  TaskLocalDataSourceImpl({required this.sharedPreference});
+  TaskLocalDataSourceImpl({required this.storage});
 
   @override
-  Future<List<TaskModel>>fetch() async {
+  Future<List<TaskModel>> get() async {
     try {
-      final String? value = await sharedPreference.getString(CACHED_TASK);
-      if (value == null ) {
+      final String? value = await storage.read(key: CACHED_TASK);
+
+      if (value == null) {
         return [];
       }
 
-      List<dynamic> task = jsonDecode(value);
-      List<TaskModel> allTasks = task.map((e) => TaskModel.fromJson(e)).toList();
+      List<dynamic> taskList = jsonDecode(value);
+      List<TaskModel> allTasks = taskList.map((e) => TaskModel.fromJson(e)).toList();
 
       return allTasks;
-
-    } catch(e) {
+    } catch (e) {
       throw CacheFailure();
     }
   }
 
+
+  @override
+  Future<void> save(List<TaskModel> tasks)async {
+    try{
+      String jsonString = json.encode(tasks.map((task) => task.toJson()).toList());
+
+      await storage.write(key: CACHED_TASK, value: jsonString);
+    } catch(e){
+      throw CacheFailure();
+    }
+  }
 }

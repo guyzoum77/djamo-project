@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //return  MaterialApp(home: OnBoardingPage());
+    // return  MaterialApp(home: OnBoardingPage());
     //return  MaterialApp(home: TaskView());
-    return  MaterialApp(home: LoadedTaskView());
+    return  MaterialApp(home: TaskPage());
   }
 }
 

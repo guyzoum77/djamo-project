@@ -12,7 +12,7 @@ class TaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => sl<TaskBloc>()..add(FetchAllTaskEvent()),
+        create: (_) => sl<TaskBloc>()..add(GetTaskEvent()),
         child: ChangeNotifierProvider(create: (_) => TaskProvider(), child: TaskView())
     );
   }

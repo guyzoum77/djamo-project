@@ -9,25 +9,46 @@ final class TaskInitial extends TaskState {
   List<Object> get props => [];
 }
 
-class FetchAllTaskLoading extends TaskState {
+class GetTaskLoading extends TaskState {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
 
 
-class FetchAllTaskLoaded extends TaskState {
+class GetTaskLoaded extends TaskState {
   final List<TaskEntity> taskEntity;
-  const FetchAllTaskLoaded({required this.taskEntity});
 
+  const GetTaskLoaded({required this.taskEntity});
 
   @override
   List<Object?> get props => [taskEntity];
 }
 
 
-class FetchAllTaskError extends TaskState {
+class GetTaskError extends TaskState {
   final String message;
-  const FetchAllTaskError({required this.message});
+  const GetTaskError({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class SaveTaskLoading extends TaskState {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+
+class SaveTaskLoaded extends TaskState {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+
+class SaveTaskError extends TaskState {
+  final String message;
+
+  const SaveTaskError({required this.message});
 
   @override
   List<Object?> get props => [message];

@@ -10,14 +10,14 @@ class TaskCardWidget extends StatefulWidget {
   final double marginTop;
   final double marginBottom;
   final double radius;
-  final BoxBorder? border;
+   BoxBorder? border;
   final double boxShadowSpreadRadius;
   final double boxShadowBlurRadius;
   final double offsetLeft;
   final double offsetRight;
   final Widget? child;
 
-  const TaskCardWidget({super.key,
+   TaskCardWidget({super.key,
     this.containerWidth,
     required this.containerHeight,
     required this.marginLeft,

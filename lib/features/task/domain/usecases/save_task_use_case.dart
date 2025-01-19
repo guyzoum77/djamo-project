@@ -4,18 +4,20 @@ import 'package:djamo_test/core/error/failures.dart';
 import 'package:djamo_test/features/task/domain/repositories/task_repository.dart';
 import 'package:equatable/equatable.dart';
 
-class TaskAddUseCase implements UseCase<void, AddTaskParams> {
+import '../entities/task_entity.dart';
+
+class SaveTaskUseCase implements UseCase<void, List<TaskEntity>> {
   final TaskRepository taskRepository;
 
-  const TaskAddUseCase({required this.taskRepository});
+  const SaveTaskUseCase({required this.taskRepository});
 
   @override
-  Future<Either<Failure, dynamic>> call(AddTaskParams params) {
-    return taskRepository.save(id: params.id, title: params.title, description: params.description, status: params.status, createdAt: params.createdAt);
+  Future<Either<Failure, dynamic>> call(List<TaskEntity> params) async{
+    return await taskRepository.save( params );
   }
 }
 
-class AddTaskParams extends Equatable {
+class SaveTaskParams extends Equatable {
   final String id;
   final String title;
   final String description;
@@ -23,7 +25,7 @@ class AddTaskParams extends Equatable {
   final DateTime createdAt;
   final DateTime? updatedAt;
 
-  const AddTaskParams({required this.id, required this.title, required this.description, this.status = false, required this.createdAt, this.updatedAt});
+  const SaveTaskParams({required this.id, required this.title, required this.description, this.status = false, required this.createdAt, this.updatedAt});
 
   @override
   List<Object?> get props => [id, title, description, status, createdAt, updatedAt];
